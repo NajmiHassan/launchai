@@ -1,0 +1,19 @@
+<!-- myapp/templates/myapp/includes/navbar.html -->
+
+{% load static %}
+<nav class="navbar">
+    <div class="navbar-logo">
+        <a href="{% url 'home' %}">
+            <img src="{% static 'images/logo.png' %}" alt="Logo">
+        </a>
+    </div>
+    <ul class="navbar-links">
+        <li><a href="">Motivation</a></li>
+        <li><a href="">Services</a></li>
+        <li><a href="">Our Team</a></li>
+        <li><a href="">Contact Us</a></li>
+    </ul>
+    <div class="navbar-signup">
+        <a href="" class="btn-signup">Sign Up</a>
+    </div>
+</nav>
