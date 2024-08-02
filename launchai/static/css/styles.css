@@ -242,10 +242,6 @@ body {
 
 
 
-.projects-container {
-    display: flex;
-
-}
 
 .projects-sidebar {
     width: 76px;    
@@ -255,6 +251,8 @@ body {
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
+    overflow: hidden; 
+    position: fixed;
 }
 
 
@@ -290,12 +288,14 @@ body {
 .projects-main {
     flex-grow: 1;
     padding: 20px;
-    margin: 50px 20px 20px 50px;
+    margin: 50px 70px 20px 50px;
     border-radius: 20px;
     padding: 20px 50px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-left: 76px;
 }
+
 
 .projects-box {
     background-color: #fff;
@@ -342,4 +342,120 @@ body {
 
 .projects-box a{
     text-decoration: none;
+}
+
+.projects-container {
+    display: flex;
+}
+
+
+.project-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.project-header h2{
+    font-size: 36px;
+    font-weight: 700;
+}
+.project-header h2 span{
+    color: #FF385C;
+}
+
+.project-header .btn-get-going {
+    background-color: #000000;
+    color: white;
+    padding: 15px 40px;
+    border-radius: 9px;
+    text-decoration: none;
+    font-size: 16px;
+    line-height: 19.36px;
+}
+
+.project-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.project-box {
+    background-color: #ffffff;
+    border: 1px solid #E2E8F0;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.project-box .box-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.project-box .box-header .box-icon {
+    width: 42px;
+    height: 42px;
+    margin-right: 10px;
+}
+
+.project-box h3 {
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 18px;
+    text-align: left;
+    margin-left: 15px;
+
+}
+.project-box p{
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 16px;
+    text-align: justified;
+
+}
+.update-dashboard form{
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.update-dashboard .dashboard-input {
+    flex: 1;
+    padding: 5px 15px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    margin-right: 10px;
+    box-shadow: 0px 12px 20px 0px #00000014;
+    height: 50px;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 24.2px;
+    text-align: left;
+
+}
+
+.update-dashboard .btn-update {
+    background-color: #000000;
+    color: white;
+    border-radius: 5px;
+    height: 60px;
+    width: 60px;
+    outline: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    border: none;
+}
+
+
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+.grid-container .project-box h3{
+    text-align: center;
 }

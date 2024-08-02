@@ -1,0 +1,22 @@
+{% extends 'myapp/base.html' %}
+{% load static %}
+
+{% block title %}Startup Idea{% endblock %}
+
+{% block content %}
+<div class="signup-container">
+    <div class="signup-left">
+        <img src="{% static 'images/logo.png' %}" alt="Signup Image" class="signup-image">
+        <p class="signup-text">What’s your startup’s idea? Share in as much detail as you can!</p>
+            <form action="{% url 'set_idea' %}" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <input type="text" id="text" name="text" placeholder="Enter your idea here " required>
+                </div>
+                <div class="nextbtn">
+                    <button type="submit" class="btn-signup" style="min-width: 200px;">GENERATE A DASHBOARD</button>
+                </div>
+            </form>
+    </div>
+</div>
+{% endblock %}

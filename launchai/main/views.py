@@ -84,12 +84,38 @@ def set_startup(request):
             if not created:
                 messages.info(request, "This startup already exists. You can update it.")
             
-            messages.success(request, "Startup successfully set!")
-            return redirect('projects')
+            request.session['project_id'] = project.id  
+            messages.success(request, "Startup successfully set! Now, set your idea.")
+            return redirect('set_idea')
         except Exception as e:
             messages.error(request, f"Error setting startup: {e}")
 
     return render(request, 'myapp/pages/startup_set.html')
+
+@login_required
+def set_idea(request):
+    project_id = request.session.get('project_id')
+    if not project_id:
+        messages.error(request, "No startup found. Please set your startup name first.")
+        return redirect('set_startup')
+
+    project = get_object_or_404(StartupProject, id=project_id)
+
+    if request.method == 'POST':
+        startup_idea = request.POST.get('text')
+        
+        if not startup_idea:
+            messages.error(request, "Startup idea cannot be empty.")
+            return redirect('set_idea')
+        
+        project.startup_idea = startup_idea
+        project.save()
+        
+        messages.success(request, "Startup idea successfully set! Generating dashboard.")
+        return redirect('projects')
+
+    return render(request, 'myapp/pages/startup_idea.html')
+
 
 @login_required
 def projects(request):
