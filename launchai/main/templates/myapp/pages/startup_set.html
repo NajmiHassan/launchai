@@ -1,0 +1,25 @@
+<!-- myapp/templates/myapp/signup.html -->
+{% extends 'myapp/base.html' %}
+{% load static %}
+
+{% block title %}Startup name{% endblock %}
+
+{% block content %}
+<div class="signup-container">
+    <div class="signup-left">
+        <img src="{% static 'images/logo.png' %}" alt="Signup Image" class="signup-image">
+        <p class="signup-text">Nice to meet you, {{ user.username }}!
+            Let’s add your startup to your projects!</p>
+            <h1><b>What’s your startup’s name?</b></h1>
+            <form action="{% url 'set_startup' %}" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <input type="text" id="text" name="text" placeholder="LaunchAI" required>
+                </div>
+                <div class="nextbtn">
+                    <button type="submit" class="btn-signup" style="width: 100px;">Next</button>
+                </div>
+            </form>
+    </div>
+</div>
+{% endblock %}

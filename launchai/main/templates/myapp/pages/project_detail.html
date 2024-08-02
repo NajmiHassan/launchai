@@ -1,0 +1,93 @@
+<!-- myapp/templates/myapp/projects.html -->
+{% extends 'myapp/base.html' %}
+{% load static %}
+
+{% block title %}Projects{% endblock %}
+
+{% block content %}
+<div class="projects-container">
+    {% include 'myapp/includes/sidebar.html' %}
+
+    <main class="projects-main">
+        <div class="project-header">
+            <h2>{{ project.startup_name }} <span>Dashboard</span></h2>
+            <a href="{% url 'projects' %}" class="btn-get-going">Let's Get Going!</a>
+        </div>
+        
+        <div class="project-section">
+            <div class="project-box">
+                <div class="box-header">
+                    <img src="{% static 'images/icons/idea.png' %}" alt="Idea Icon" class="box-icon">
+                    <h3>Idea</h3>
+                </div>
+                <p>{{ project.startup_idea }}</p>
+            </div>
+            
+            <div class="project-box">
+                <div class="box-header">
+                    <img src="{% static 'images/icons/tagline.png' %}" alt="Tagline Icon" class="box-icon">
+                    <h3>Startup Tagline</h3>
+                </div>
+                <p>{{ project.generated_slogan }}</p>
+            </div>
+            
+            <div class="grid-container">
+                <div class="grid-item">
+                    <div class="project-box">
+                        <div class="box-header">
+                            <h3>Problem</h3>
+                        </div>
+                        <p>{{ project.generated_problem }}</p>
+                    </div>
+                </div>
+                <div class="grid-item">
+                    <div class="project-box">
+                        <div class="box-header">
+                            <h3>Solution</h3>
+                        </div>
+                        <p>{{ project.generated_solution }}</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="grid-container">
+                <div class="grid-item">
+                    <div class="project-box">
+                        <div class="box-header">
+                            <h3>User Persona</h3>
+                        </div>
+                        <p>{{ project.generated_user_persona }}</p>
+                    </div>
+                </div>
+                <div class="grid-item">
+                    <div class="project-box">
+                        <div class="box-header">
+                            <h3>Market Size</h3>
+                        </div>
+                        <p>{{ project.generated_market_analysis }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="grid-container">
+                <div class="grid-item">
+            <div class="project-box">
+                <div class="box-header">
+                    <h3>MVP Builder</h3>
+                </div>
+                <p>{{ project.generated_mvp_builder }}</p>
+            </div>
+            </div></div>
+        </div>
+
+        <div class="update-dashboard">
+            <form method="post" >
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="text" class="dashboard-input" placeholder="Update Dashboard">
+                <button class="btn-update">&uarr;</button>
+            </form>
+            
+        </div>
+    </main>
+</div>
+{% endblock %}

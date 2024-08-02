@@ -1,0 +1,24 @@
+<!-- myapp/templates/myapp/home.html -->
+{% extends 'myapp/base.html' %}
+{% load static %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="content" style="background: url('{% static "images/background.png" %}') no-repeat center center/cover;">
+    {% include 'myapp/includes/navbar.html' %}
+  
+    <div class="home-container">
+        <div class="home-content">
+            <p class="small-button-text">AI powered platform</p>
+            <h1 class="main-heading">Your <span>Startup</span> Journey Starts Here</h1>
+            <p class="small-text">Empowering Student Innovators to Transform their Ideas into Reality</p>
+            {% if user.is_authenticated %}
+                <a href="{% url 'projects' %}" class="btn-get-started">Getting Started</a>
+            {% else %}
+                <a href="{% url 'signup' %}" class="btn-get-started">Getting Started</a>
+            {% endif %}
+        </div>
+    </div>
+  
+</div>
+{% endblock %}
