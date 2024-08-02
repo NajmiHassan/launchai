@@ -1,0 +1,55 @@
+<!-- myapp/templates/myapp/projects.html -->
+{% extends 'myapp/base.html' %}
+{% load static %}
+
+{% block title %}Projects{% endblock %}
+
+{% block content %}
+<div class="projects-container">
+    <aside class="projects-sidebar">
+        <div class="sidebar-icons">
+
+        <div class="sidebar-logo">
+            <img src="{% static 'images/icons/logo.png' %}" alt="Logo">
+        </div>
+            <img src="{% static 'images/icons/dashboard.png' %}" alt="dashboard" class="sidebar-icon active">
+            <img src="{% static 'images/icons/chat.png' %}" alt="chat" class="sidebar-icon">
+            <img src="{% static 'images/icons/ai.png' %}" alt="ai" class="sidebar-icon">
+        </div>
+        <div class="sidebar-profile">
+            <img src="{% static 'images/icons/profile.png' %}" alt="Profile" class="profile-img">
+        </div>
+    </aside>
+
+    <main class="projects-main">
+        <h2>{{ user.username }}'s Projects</h2>
+        <div class="projects-box">
+            
+            {% for project in projects %}
+                <div class="project-item">
+                    <a href="{% url 'project_detail' id=project.id %}">
+                    <div class="project-logo">
+                        <img src="{% static 'images/icons/logo.png' %}" alt="Project Logo">
+                    </div>
+                    </a>
+                    <div class="project-info">
+                        <h3>{{ project.startup_name }}</h3>
+                        <p>Created on: {{ project.created_at }}</p>
+                    </div>
+                </div>
+            {% empty %}
+                <p>No projects yet. Add a new project below!</p>
+            {% endfor %}
+            <div class="projects-item">
+                <a href="{% url 'set_startup' %}">
+                <div class="project-logo">
+                    +
+                </div>
+            </a>
+            </div>
+        </div>
+
+        
+    </main>
+</div>
+{% endblock %}

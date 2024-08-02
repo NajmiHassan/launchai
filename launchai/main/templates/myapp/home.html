@@ -1,9 +1,12 @@
 <!-- myapp/templates/myapp/home.html -->
 {% extends 'myapp/base.html' %}
-
+{% load static %}
 {% block title %}Home{% endblock %}
 
 {% block content %}
+<div class="content" style="background: url('{% static "images/background.png" %}') no-repeat center center/cover;">
+    {% include 'myapp/includes/navbar.html' %}
+  
 <div class="home-container">
     <div class="home-content">
         <p class="small-button-text">AI powered platform</p>
@@ -11,5 +14,7 @@
         <p class="small-text">Empowering Student Innovators to Transform their Ideas into Reality</p>
         <a href="" class="btn-get-started">Getting Started</a>
     </div>
+</div>
+  
 </div>
 {% endblock %}
