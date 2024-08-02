@@ -6,7 +6,7 @@
 {% block content %}
 <div class="signup-container">
     <div class="signup-left">
-        <img src="{% static 'images/logo.png' %}" alt="Signup Image" class="signup-image">
+        <img src="{% static 'images/logo.svg' %}" alt="Signup Image" class="signup-image">
         <p class="signup-text">What’s your startup’s idea? Share in as much detail as you can!</p>
             <form action="{% url 'set_idea' %}" method="post">
                 {% csrf_token %}

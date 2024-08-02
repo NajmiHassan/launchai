@@ -288,12 +288,14 @@ body {
 .projects-main {
     flex-grow: 1;
     padding: 20px;
-    margin: 50px 70px 20px 50px;
+    margin: 50px 70px 0px 50px;
     border-radius: 20px;
     padding: 20px 50px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    margin-left: 76px;
+    margin-left: 140px;
+    background-color: white;
+    min-height: 100vh;
 }
 
 

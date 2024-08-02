@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login,logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from .services import solutioning_generator
 from .models import *
 # Create your views here.
 
@@ -121,9 +122,37 @@ def set_idea(request):
 def projects(request):
     # Fetch user's projects
     projects = StartupProject.objects.filter(user=request.user)
+    print(projects)
     return render(request, 'myapp/pages/projects.html', {'projects': projects})
 
 
 def project_detail(request, id):
     project = get_object_or_404(StartupProject, id=id)
-    return render(request, 'myapp/pages/project_detail.html', {'project': project})
+    print("generated problem :",project.generated_problem )
+    if(project.generated_problem is None) : 
+        payload = solutioning_generator(project.id, project.startup_name, project.startup_idea)
+        project.generated_problem = payload['generated_problem']
+        project.generated_slogan = payload['generated_slogan']
+        project.generated_solution = payload['generated_solution']
+        
+    # Save the updated project to the database
+        project.save()
+    print("generated problem :",project.generated_problem )
+
+    
+    return render(request, 'myapp/pages/project_detail.html',  {'project': project})
+
+
+
+# def generate(request, id):
+#     project = get_object_or_404(StartupProject, id=id)
+#     if(project.generated_problem ) : 
+#         payload = solutioning_generator(project.id, project.startup_name, project.startup_idea)
+#         project.generated_problem = payload['generated_problem']
+#         project.generated_slogan = payload['generated_slogan']
+#         project.generated_solution = payload['generated_solution']
+        
+#     # Save the updated project to the database
+#         project.save()
+    
+#     return render(request, 'myapp/pages/project_detail.html',  {'project': project})
