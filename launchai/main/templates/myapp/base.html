@@ -7,9 +7,14 @@
     <title>{% block title %}My Project{% endblock %}</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    
+    <script type="module" src="{% static 'js/chat_front.js' %}" defer></script>
+
 </head>
 <body style="background-image: url('{% static "images/background.svg" %}');">
+
     {% block content %}
     {% endblock %}
+
 </body>
 </html>

@@ -1,0 +1,31 @@
+{% extends 'myapp/base.html' %}
+{% load static %}
+
+
+{% block title %}Projects{% endblock %}
+
+{% block content %}
+
+    {% include 'myapp/includes/sidebar.html' %}
+      <div class="container-chatbot">
+        <div class="chatbot" style ="margin-top: 50px;">
+          <div style="display: flex; justify-content: center; "> 
+            <p class="falcon">Falcon 180B</p>
+          </div>
+        <span class="close-btn material-symbols-outlined"></span>
+
+        <ul class="chatbox">
+          <li class="chat incoming">
+            <img src="{% static 'images/icons/chatbot.svg' %}" class="bot-img" alt="esi bot" width="48" height="48">
+            <p class="pp">Hi there 👋<br>How can I help you today?</p>
+          </li>
+        </ul>
+        <div class="chat-input">
+          <textarea  id="message-input" placeholder="Enter a message..." spellcheck="false" required></textarea>
+          <span id="send-btn" class="material-symbols-rounded">send</span>
+        </div>
+      </div>
+  
+
+
+{% endblock %}

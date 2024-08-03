@@ -4,6 +4,10 @@
 
 {% block title %}Projects{% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/chat_front.css' %}" />
+{% endblock %}
+
 {% block content %}
 <div class="projects-container">
     {% include 'myapp/includes/sidebar.html' %}
@@ -39,4 +43,7 @@
         
     </main>
 </div>
+{% endblock %}
+{% block extra_js %}
+<script type="module" src="{% static 'js/chat_front.js' %}" defer></script>
 {% endblock %}

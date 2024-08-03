@@ -1,8 +1,5 @@
 from django.db import models
-
-# from users.models import User
-
-# Create your models here.
+from django.contrib.auth.models import User
 
 
 class Conversation(models.Model):
@@ -11,7 +8,6 @@ class Conversation(models.Model):
         ("falcon-180B", 'falcon-180B'),
         ("falcon-11B", 'falcon-11B'),
     ]
-    
     ASK_DOUBTS = 'ask_doubts'
     LEARN_BEST_PRACTICES = 'learn_best_practices'
     ACCESS_PREVIOUS_QA = 'access_previous_qa'
@@ -23,12 +19,11 @@ class Conversation(models.Model):
         (ACCESS_PREVIOUS_QA, 'Access all your previously asked questions and answers'),
         (TAKE_QUIZ, 'Take a quiz to test your knowledge'),
     ]
-    # user = models.ForeignKey("users.User", on_delete=models.CASCADE, related_name='conversations')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='conversations')
     chatbot = models.CharField(max_length=20, choices=CHATBOT_CHOICES)
     started_at = models.DateTimeField(auto_now_add=True)
     name = models.CharField(max_length=64, blank=True, null=True) 
     topic = models.CharField(max_length=50, choices=TOPIC_CHOICES)
-
 
 
 class Message(models.Model):

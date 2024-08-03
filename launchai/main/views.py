@@ -3,8 +3,9 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login,logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .services import solutioning_generator
+from .services import solutioning_generator 
 from .models import *
+from rest_framework.response import Response
 # Create your views here.
 
 def home(request):
@@ -141,6 +142,15 @@ def project_detail(request, id):
 
     
     return render(request, 'myapp/pages/project_detail.html',  {'project': project})
+
+
+def chat_view(request):
+  return render(request, 'myapp/pages/chat_front.html')
+
+
+
+    
+    
 
 
 

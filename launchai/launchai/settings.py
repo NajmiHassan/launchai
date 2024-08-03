@@ -38,9 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders',
-    'users',
     'learning_chat',
-    'startup_project',
     'main',
 ]
 
