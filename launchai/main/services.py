@@ -88,3 +88,130 @@ def solutioning_generator(session_id, startup_name, idea_query):
     
     return payload
 
+
+
+# PROMPT TEMPLATE: for building persona profile: demographics
+system_prompt_demographics = """
+You are a startup specialist.
+User has provided his starup idea, goal, and problem statement to you. 
+Based on that, User asks your help to build a persona profile of his startup idea.
+
+You only need to give a response of persona demographics using this answer format:
+<<AGE>>|||<<GENDER>>|||<<LOCATION>>|||<<OCCUPATION>>|||<<SALLARY>>
+
+To know how the answer format would look like, you can see the response example below.
+
+Response Example #1:
+13-26 years old|||Male|||Bandung, Indonesia|||workers working 8-5 at the office|||9K USD per month
+
+Response Example #2:
+25-40 years old|||Female|||Gurgaon, India|||Working moms who stay at home|||5K USD per month
+"""
+user_prompt_demographics = """
+### STARTUP NAME: <<startup_name>>
+### IDEA: <<idea>>
+### GOAL: <<goal>>
+### PROBLEM STATEMENT: <<problem_statement>>
+### ANSWER:
+"""
+# PROMPT TEMPLATE: for building persona profile: pain points, core needs, motivation, and behavior
+system_prompt_detailing = """
+You are a startup specialist.
+User has provided his starup idea, goal, and problem statement to you. 
+Based on that, User asks your help to build a persona profile of his startup idea.
+
+Provided to you the persona demographics and other useful information. 
+You need to provide his/her pain points, his/her core needs, his/her motivation, and his/her behavior.
+"""
+user_prompt_detailing= """
+### STARTUP NAME: <<startup_name>>
+### IDEA: <<idea>>
+### GOAL: <<goal>>
+### PROBLEM STATEMENT: <<problem_statement>>
+### SOLUTION: <<solution>>
+### DEMOGRAPHICS: <<demographics>>
+### ANSWER:
+"""
+# PROMPT TEMPLATE: for building persona profile: picking the components
+system_prompt_pick = """
+Provided to you a text. You need to pick up the only '<<component>>' components of the text provided. 
+Just straightforward pick it up, you don't need to modify
+"""
+user_prompt_pick = """
+### TEXT: <<text>>
+### ANSWER: 
+"""
+# PROMPT TEMPLATE: for building persona profile: rewriting
+system_prompt_rewrite = """
+Provided to you a text. you need to rewrite it in sentences using a first point of view "I". 
+The maximum number of sentences is 4. 
+"""
+user_prompt_rewrite= """
+### TEXT: <<text>>
+### ANSWER: 
+"""
+# PROMPT TEMPLATE: for building persona profile: summarized quote
+system_prompt_quote = """
+You are a satrtup specialist.
+Provided to you a text of persona information. You need to summarize what is something that he love to get or to have. 
+Please provide the answer in 1 sentence. You need to wriet it using a first point of view "I". 
+Please make it as concise as possible. 
+"""
+user_prompt_quote= """
+### TEXT: <<text>>
+### ANSWER:
+"""
+import random
+
+def generate_random_demographics():
+    ages = range(18, 70)  # Assuming ages between 18 and 70
+    genders = [True, False]  # Assuming True for male and False for female
+    locations = ['Algeria', 'India', 'UAE', 'Indonisia', 'Palestine']  # Example locations
+    occupations = ['Engineer', 'Doctor', 'Teacher', 'Artist', 'Entrepreneur']  # Example occupations
+    salaries = range(30000, 150000, 5000)  
+
+    return {
+        'age': random.choice(ages),
+        'gender': random.choice(genders),
+        'location': random.choice(locations),
+        'occupation': random.choice(occupations),
+        'salary': random.choice(salaries)
+    }
+
+def persona_profiling_builder(session_id,output_solutioning,startup_name,idea):
+    # Building Demographics
+    demographics_string =""
+    demographics_dict= generate_random_demographics()
+
+    # Building Persona Details
+    persona_details = generate_completion(system_prompt_detailing,user_prompt_detailing.replace("<<idea>>",idea).replace("<<startup_name>>",startup_name).replace("<<slogan>>",output_solutioning["generated_slogan"]).replace("<<problem_statement>>",output_solutioning["generated_problem"]).replace("<<solution>>",output_solutioning["generated_solution"]).replace("<<demographics>>",demographics_string).replace("\n\n","")).rstrip().lstrip()
+    complete_information = "Based on the given information, we can create a persona profile as follows:\n\n"+persona_details
+
+    # Get the pain points
+    pain_points_detail = generate_completion(system_prompt_pick.replace("<<component>>","pain points"),user_prompt_pick.replace("<<text>>",complete_information))
+    pain_points = generate_completion(system_prompt_rewrite,user_prompt_rewrite.replace("<<text>>",pain_points_detail))
+    # Get the core needs
+    core_needs_detail = generate_completion(system_prompt_pick.replace("<<component>>","core needs"),user_prompt_pick.replace("<<text>>",complete_information))
+    core_needs = generate_completion(system_prompt_rewrite,user_prompt_rewrite.replace("<<text>>",core_needs_detail))
+    # Get the motivation
+    motivation_detail = generate_completion(system_prompt_pick.replace("<<component>>","motivation"),user_prompt_pick.replace("<<text>>",complete_information))
+    motivation = generate_completion(system_prompt_rewrite,user_prompt_rewrite.replace("<<text>>",motivation_detail))
+    # Get the behavior
+    behavior_detail = generate_completion(system_prompt_pick.replace("<<component>>","behavior"),user_prompt_pick.replace("<<text>>",complete_information))
+    behavior = generate_completion(system_prompt_rewrite,user_prompt_rewrite.replace("<<text>>",behavior_detail))
+    # Get the summarized quote
+    quote = generate_completion(system_prompt_quote,user_prompt_quote.replace("<<text>>",persona_details))
+
+    # Get output
+    payload = {
+        "module":"persona profiling builder",
+        "session_id":session_id,
+        "demographics":demographics_dict,
+        "pain_points":pain_points,
+        "core_needs":core_needs,
+        "motivation":motivation,
+        "behavior":behavior,
+        "quote":quote
+    }
+    # return output
+    return payload

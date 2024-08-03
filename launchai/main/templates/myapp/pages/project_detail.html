@@ -15,10 +15,10 @@
         </div>
         
         <div class="project-section">
-            <div class="project-box">
+            <div class="project-box" style="background : #FCFCFC">
                 <div class="box-header">
                     <img src="{% static 'images/icons/idea.png' %}" alt="Idea Icon" class="box-icon">
-                    <h3>Idea</h3>
+                    <h3 class= "h3-box-header">Idea</h3>
                 </div>
                 <p>{{ project.startup_idea }}</p>
             </div>
@@ -26,16 +26,17 @@
             <div class="project-box">
                 <div class="box-header">
                     <img src="{% static 'images/icons/tagline.png' %}" alt="Tagline Icon" class="box-icon">
-                    <h3>Startup Tagline</h3>
+                    <h3 class= "h3-box-header">Startup Tagline</h3>
                 </div>
                 <p>{{ project.generated_slogan }}</p>
             </div>
             
             <div class="grid-container">
                 <div class="grid-item">
-                    <div class="project-box">
+                    <div class="project-box" style="background : #FFF5F7">
                         <div class="box-header">
-                            <h3>Problem</h3>
+                            <img src="{% static 'images/icons/problem.png' %}" alt="Tagline Icon" class="box-icon">
+                            <h3 style ="font-size: 18px; font-weight:500; margin-left:16px;">Problem</h3>
                         </div>
                         <p>{{ project.generated_problem }}</p>
                     </div>
@@ -43,7 +44,8 @@
                 <div class="grid-item">
                     <div class="project-box">
                         <div class="box-header">
-                            <h3>Solution</h3>
+                            <img src="{% static 'images/icons/solution.png' %}" alt="Tagline Icon" class="box-icon">
+                            <h3 style ="font-size: 18px; font-weight:500; margin-left:16px;">Solution</h3>
                         </div>
                         <p>{{ project.generated_solution }}</p>
                     </div>
@@ -51,8 +53,8 @@
             </div>
             <div class="project-box" style="padding: 20px 60px; gap: 50px;">
                 <div class="box-header justify-btw">
-                    <h3>User Persona</h3>
-                    <a href="{% url 'projects' %}" class="btn-get-going">generate</a>
+                    <h3 class= "h3-box-header">User Persona</h3>
+                    <a href="{% url 'persona_profiling' id=project.id %}" class="btn-get-going">generate</a>
                 </div>
                 <div class="grid-container" style="gap: 150px;">
                     <div class="grid-item">
@@ -61,40 +63,40 @@
                                 <div class="grid-item">
                                     <img src="{% static 'images/user-persona.png' %}" alt="User Icon" class="box-icon">
                                 </div>
-                                <div class="grid-item">
-                                    <div class="title">Demographics</div>
-                                    <h2><b>Age</b> : 18-35 years old</h2>
-                                    <h2><b>Gender</b> : Female</h2>
-                                    <h2><b>Location</b> : Urban areas in the US</h2>
-                                    <h2><b>Occupation</b> : Working women who are interested in skincare</h2>
-                                    <h2><b>Salary</b> : 5K-8K USD per month</h2>
+                                <div class="grid-item" style="align-content : center ;">
+                                    <div class="title" style="margin-bottom: 24px;">Demographics</div>
+                                    <h2 class="demographic-detail" ><b>Age</b> : {{ project.generated_persona.demographics_age }}</h2>
+                                    <h2 class="demographic-detail"><b>Gender</b> : {{ project.generated_persona.demographics_gender }}</h2>
+                                    <h2 class="demographic-detail"><b>Location</b> :{{ project.generated_persona.demographics_location }}</h2>
+                                    <h2 class="demographic-detail"><b>Occupation</b> : {{ project.generated_persona.demographics_occupation }} </h2>
+                                    <h2 class="demographic-detail"><b>Salary</b> : {{ project.generated_persona.demographics_salary }}</h2>
                                 </div>
                             </div>
                             <div>
                                 <div class="title">Pain Points :</div><hr class="custom-hr">
-                                <h3>I have been struggling with finding the right skincare routine and products. It's frustrating to spend money on ineffective products and not see any results. I lack knowledge about skincare and what products to use, which makes it difficult to know where to start. Researching and finding the right products is time-consuming and overwhelming.</h3>
+                                <h3>{{ project.generated_persona.pain_points }}</h3>
                             </div>
                         </div>
                     </div>
                     <div class="grid-item">
                         <div>
                             <div class="title">Core  Needs :</div><hr class="custom-hr">
-                            <h3>I have been struggling with finding the right skincare routine and products. It's frustrating to spend money on ineffective products and not see any results. I lack knowledge about skincare and what products to use, which makes it difficult to know where to start. Researching and finding the right products is time-consuming and overwhelming.</h3>
-                        </div>
+                            <h3>{{ project.generated_persona.core_needs }}</h3>
+                        </div> 
                         <div>
                             <div class="title">Motivation :</div><hr class="custom-hr">
-                            <h3>I have been struggling with finding the right skincare routine and products. It's frustrating to spend money on ineffective products and not see any results. I lack knowledge about skincare and what products to use, which makes it difficult to know where to start. Researching and finding the right products is time-consuming and overwhelming.</h3>
+                            <h3>{{ project.generated_persona.motivation }}</h3>
                         </div>
                         <div>
                             <div class="title">Behaviors :</div><hr class="custom-hr">
-                            <h3>I have been struggling with finding the right skincare routine and products. It's frustrating to spend money on ineffective products and not see any results. I lack knowledge about skincare and what products to use, which makes it difficult to know where to start. Researching and finding the right products is time-consuming and overwhelming.</h3>
+                            <h3>{{ project.generated_persona.behavior }}</h3>
                         </div>
                     </div>
                 </div>
                 <div class="quote">
                     <div class="title">Quote</div>
                     <hr class="custom-hr">
-                    <h1>think twice code once </h1>
+                    <h1>{{ project.generated_persona.quote }}</h1>
                 </div>
             </div>
 
@@ -122,21 +124,20 @@
                 <div class="grid-container">
                     <div class="grid-item">
                         <div class="project-box">
-                            <h2>Market segmentation</h2>
+                            <h2 style ="margin-bottom:48px">Market segmentation</h2>
                             <canvas id="segmentationChart"></canvas>
 
                         </div>
                     </div>
                     <div class="grid-item">
                         <div class="project-box">
-                        <h2>Market growth (last 5 years )</h2>
+                        <h2 style ="margin-bottom:48px">Market growth (last 5 years )</h2>
                         <canvas id="growthChart"></canvas>
                     </div>
                     </div>
                 </div>
-                <div>
+                <div class="project-box">
                     <h2>Competitor list :</h2>
-                    <hr class="custom-hr" style="max-width: 150px;">
                     <ul>
                         <li>Competitor 1</li>
                         <li>Competitor 2</li>

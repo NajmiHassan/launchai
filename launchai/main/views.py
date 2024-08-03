@@ -3,9 +3,10 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login,logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .services import solutioning_generator 
+from .services import solutioning_generator , persona_profiling_builder 
 from .models import *
 from rest_framework.response import Response
+
 # Create your views here.
 
 def home(request):
@@ -146,6 +147,37 @@ def project_detail(request, id):
 
 def chat_view(request):
   return render(request, 'myapp/pages/chat_front.html')
+
+
+
+
+def persona_profiling(request , id):
+    project = get_object_or_404(StartupProject, id=id)
+    
+    if(project.generated_persona is None) : 
+        generated_solution = solutioning_generator(project.id, project.startup_name, project.startup_idea , )
+        persona = persona_profiling_builder(id, generated_solution,project.startup_name, project.startup_idea )
+        demographics = persona.get('demographics', {})
+        persona = Persona.objects.create(
+            demographics_age=demographics['age'],
+            demographics_gender=demographics['gender'],
+            demographics_location=demographics['location'],
+            demographics_occupation=demographics['occupation'],
+            demographics_salary=float(demographics['salary']),
+            pain_points=persona.get('pain_points', ''),
+            core_needs=persona.get('core_needs', ''),
+            motivation=persona.get('motivation', ''),
+            behavior=persona.get('behavior', ''),
+            quote=persona.get('quote', '')
+        )
+        
+        project.generated_persona = persona
+        project.save()
+    print(project.generated_persona.demographics_age)
+    return render(request, 'myapp/pages/project_detail.html',  {'project': project})
+    
+
+
 
 
 

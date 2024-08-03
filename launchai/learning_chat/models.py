@@ -19,7 +19,7 @@ class Conversation(models.Model):
         (ACCESS_PREVIOUS_QA, 'Access all your previously asked questions and answers'),
         (TAKE_QUIZ, 'Take a quiz to test your knowledge'),
     ]
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='conversations')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='conversations' , null=True, blank=True)
     chatbot = models.CharField(max_length=20, choices=CHATBOT_CHOICES)
     started_at = models.DateTimeField(auto_now_add=True)
     name = models.CharField(max_length=64, blank=True, null=True) 
