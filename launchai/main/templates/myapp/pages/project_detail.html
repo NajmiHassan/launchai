@@ -49,25 +49,104 @@
                     </div>
                 </div>
             </div>
-            
-            <div class="grid-container">
-                <div class="grid-item">
-                    <div class="project-box">
-                        <div class="box-header">
-                            <h3>User Persona</h3>
+            <div class="project-box" style="padding: 20px 60px; gap: 50px;">
+                <div class="box-header justify-btw">
+                    <h3>User Persona</h3>
+                    <a href="{% url 'projects' %}" class="btn-get-going">generate</a>
+                </div>
+                <div class="grid-container" style="gap: 150px;">
+                    <div class="grid-item">
+                        <div>
+                            <div class="grid-container">
+                                <div class="grid-item">
+                                    <img src="{% static 'images/user-persona.png' %}" alt="User Icon" class="box-icon">
+                                </div>
+                                <div class="grid-item">
+                                    <div class="title">Demographics</div>
+                                    <h2><b>Age</b> : 18-35 years old</h2>
+                                    <h2><b>Gender</b> : Female</h2>
+                                    <h2><b>Location</b> : Urban areas in the US</h2>
+                                    <h2><b>Occupation</b> : Working women who are interested in skincare</h2>
+                                    <h2><b>Salary</b> : 5K-8K USD per month</h2>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="title">Pain Points :</div><hr class="custom-hr">
+                                <h3>I have been struggling with finding the right skincare routine and products. It's frustrating to spend money on ineffective products and not see any results. I lack knowledge about skincare and what products to use, which makes it difficult to know where to start. Researching and finding the right products is time-consuming and overwhelming.</h3>
+                            </div>
                         </div>
-                        <p>{{ project.generated_user_persona }}</p>
+                    </div>
+                    <div class="grid-item">
+                        <div>
+                            <div class="title">Core  Needs :</div><hr class="custom-hr">
+                            <h3>I have been struggling with finding the right skincare routine and products. It's frustrating to spend money on ineffective products and not see any results. I lack knowledge about skincare and what products to use, which makes it difficult to know where to start. Researching and finding the right products is time-consuming and overwhelming.</h3>
+                        </div>
+                        <div>
+                            <div class="title">Motivation :</div><hr class="custom-hr">
+                            <h3>I have been struggling with finding the right skincare routine and products. It's frustrating to spend money on ineffective products and not see any results. I lack knowledge about skincare and what products to use, which makes it difficult to know where to start. Researching and finding the right products is time-consuming and overwhelming.</h3>
+                        </div>
+                        <div>
+                            <div class="title">Behaviors :</div><hr class="custom-hr">
+                            <h3>I have been struggling with finding the right skincare routine and products. It's frustrating to spend money on ineffective products and not see any results. I lack knowledge about skincare and what products to use, which makes it difficult to know where to start. Researching and finding the right products is time-consuming and overwhelming.</h3>
+                        </div>
                     </div>
                 </div>
-                <div class="grid-item">
-                    <div class="project-box">
-                        <div class="box-header">
-                            <h3>Market Size</h3>
-                        </div>
-                        <p>{{ project.generated_market_analysis }}</p>
-                    </div>
+                <div class="quote">
+                    <div class="title">Quote</div>
+                    <hr class="custom-hr">
+                    <h1>think twice code once </h1>
                 </div>
             </div>
+
+            <div class="project-box" style="padding: 20px 60px; gap: 50px;">
+                <div class="box-header justify-btw">
+                    <h3>Market Analisis</h3>
+                    <a href="{% url 'projects' %}" class="btn-get-going">generate</a>
+                </div>
+                
+                <div class="grid-container">
+                    <div class="grid-item">  
+                        <div class="project-box grid-container">
+                            <div class="grid-item">
+                                <h1>+ 120 M </h1>
+                                <h2>Market size</h2>
+                            </div>
+                            <div class="grid-item">
+                                <img src="{% static 'images/icons/market-size.png' %}" alt="Market Size Icon" class="box-icon">
+                            </div>
+                        </div> 
+                    </div>
+                    <div class="grid-item">
+                    </div>
+                </div>
+                <div class="grid-container">
+                    <div class="grid-item">
+                        <div class="project-box">
+                            <h2>Market segmentation</h2>
+                            <canvas id="segmentationChart"></canvas>
+
+                        </div>
+                    </div>
+                    <div class="grid-item">
+                        <div class="project-box">
+                        <h2>Market growth (last 5 years )</h2>
+                        <canvas id="growthChart"></canvas>
+                    </div>
+                    </div>
+                </div>
+                <div>
+                    <h2>Competitor list :</h2>
+                    <hr class="custom-hr" style="max-width: 150px;">
+                    <ul>
+                        <li>Competitor 1</li>
+                        <li>Competitor 2</li>
+                        <li>Competitor 3</li>
+                        <li>Competitor 4</li>
+                    </ul>
+                </div>
+            </div>
+
+          
             <div class="grid-container">
                 <div class="grid-item">
             <div class="project-box">
@@ -90,4 +169,63 @@
         </div>
     </main>
 </div>
+
+<script>
+     // Circle Chart (Market Segmentation)
+     const segmentationCtx = document.getElementById('segmentationChart').getContext('2d');
+        const segmentationChart = new Chart(segmentationCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Men', 'Women'],
+                datasets: [{
+                    data: [80, 20],
+                    backgroundColor: ['#36A2EB', '#FF6384'],
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.raw !== null) {
+                                    label += context.raw + '%';
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Bar Chart (Market Growth - Last 5 years)
+        const growthCtx = document.getElementById('growthChart').getContext('2d');
+        const growthChart = new Chart(growthCtx, {
+            type: 'bar',
+            data: {
+                labels: ['2019', '2020', '2021', '2022', '2023'],
+                datasets: [{
+                    label: 'Market Growth',
+                    data: [10, 15, 25, 30, 45], // Example data
+                    backgroundColor: '#4BC0C0',
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+</script>
 {% endblock %}
