@@ -52,7 +52,17 @@
             {% endif %}" src="{% static 'images/icons/ai.svg' %}" alt="chat" class="sidebar-icon">
         </a>
     </div>
-    <div class="sidebar-profile">
-        <img src="{% static 'images/icons/profile.png' %}" alt="Profile" class="profile-img">
+
+    <div class="">
+    </div>
+
+    <div class="sidebar-profile" style ="display : flex; flex-direction:column ; align-items: center;">
+
+    <a href="{% url 'logout' %}" style="margin-bottom: 24px;">
+        <img src="{% static 'images/icons/logout.svg' %}" alt="Logout">
+    </a>
+    <img src="{% static 'images/icons/profile.png' %}" alt="Profile" class="profile-img" >
     </div>
 </aside>
+
+

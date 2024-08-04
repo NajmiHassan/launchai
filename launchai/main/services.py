@@ -19,6 +19,8 @@ def generate_completion(system_prompt, user_prompt):
             output += (chunk.choices[0].delta.content)
     return output.rstrip().lstrip()
 
+
+
 system_def ="""
 You are a startup specialist and you must give a consice response and if your have not the answer return no response .
 """
@@ -70,23 +72,6 @@ user_prompt_4th = """
 ### PROBLEM STATEMENT: <<problem_statement>>
 ### ANSWER:
 """
-
-
-def solutioning_generator(session_id, startup_name, idea_query):
-    # Generate goal, tagline, problem statement, and solution
-    goal = generate_completion(system_prompt_1st,user_prompt_1st.replace("<<idea>>",idea_query).replace("<<startup_name>>",startup_name)).rstrip().lstrip()
-    generated_slogan = generate_completion(system_prompt_2nd,user_prompt_2nd.replace("<<idea>>",idea_query).replace("<<startup_name>>",startup_name).replace("<<goal>>",goal)).rstrip().lstrip().replace("\"","")
-    generated_problem = generate_completion(system_prompt_3rd,user_prompt_3rd.replace("<<idea>>",idea_query).replace("<<startup_name>>",startup_name).replace("<<goal>>",goal)).rstrip().lstrip()
-    generated_solution = generate_completion(system_prompt_4th,user_prompt_4th.replace("<<idea>>",idea_query).replace("<<startup_name>>",startup_name).replace("<<goal>>",goal)).replace("<<problem_statement>>",generated_problem).rstrip().lstrip()
-    # generate payload 
-    payload = {
-        "session_id":session_id,
-        "generated_slogan":generated_slogan,
-        "generated_problem":generated_problem,
-        "generated_solution":generated_solution
-    }
-    
-    return payload
 
 
 
@@ -161,60 +146,7 @@ user_prompt_quote= """
 ### TEXT: <<text>>
 ### ANSWER:
 """
-import random
 
-def generate_random_demographics():
-    ages = range(18, 70)  # Assuming ages between 18 and 70
-    genders = ["male", "female"]  # Assuming True for male and False for female
-    locations = ['Palestine' ,'Algeria', 'India', 'UAE', 'Indonisia', ]  # Example locations
-    occupations = ['----',"-----"]  # Example occupations
-    salaries = range(30000, 150000, 5000)  
-
-    return {
-        'age': random.choice(ages),
-        'gender': random.choice(genders),
-        'location': random.choice(locations),
-        'occupation': random.choice(occupations),
-        'salary': random.choice(salaries)
-    }
-
-def persona_profiling_builder(session_id,output_solutioning,startup_name,idea):
-    # Building Demographics
-    demographics_string =""
-    demographics_dict= generate_random_demographics()
-
-    # Building Persona Details
-    persona_details = generate_completion(system_prompt_detailing,user_prompt_detailing.replace("<<idea>>",idea).replace("<<startup_name>>",startup_name).replace("<<slogan>>",output_solutioning["generated_slogan"]).replace("<<problem_statement>>",output_solutioning["generated_problem"]).replace("<<solution>>",output_solutioning["generated_solution"]).replace("<<demographics>>",demographics_string).replace("\n\n","")).rstrip().lstrip()
-    complete_information = "Based on the given information, we can create a persona profile as follows:\n\n"+persona_details
-
-    # Get the pain points
-    pain_points_detail = generate_completion(system_prompt_pick.replace("<<component>>","pain points"),user_prompt_pick.replace("<<text>>",complete_information))
-    pain_points = generate_completion(system_prompt_rewrite,user_prompt_rewrite.replace("<<text>>",pain_points_detail))
-    # Get the core needs
-    core_needs_detail = generate_completion(system_prompt_pick.replace("<<component>>","core needs"),user_prompt_pick.replace("<<text>>",complete_information))
-    core_needs = generate_completion(system_prompt_rewrite,user_prompt_rewrite.replace("<<text>>",core_needs_detail))
-    # Get the motivation
-    motivation_detail = generate_completion(system_prompt_pick.replace("<<component>>","motivation"),user_prompt_pick.replace("<<text>>",complete_information))
-    motivation = generate_completion(system_prompt_rewrite,user_prompt_rewrite.replace("<<text>>",motivation_detail))
-    # Get the behavior
-    behavior_detail = generate_completion(system_prompt_pick.replace("<<component>>","behavior"),user_prompt_pick.replace("<<text>>",complete_information))
-    behavior = generate_completion(system_prompt_rewrite,user_prompt_rewrite.replace("<<text>>",behavior_detail))
-    # Get the summarized quote
-    quote = generate_completion(system_prompt_quote,user_prompt_quote.replace("<<text>>",persona_details))
-
-    # Get output
-    payload = {
-        "module":"persona profiling builder",
-        "session_id":session_id,
-        "demographics":demographics_dict,
-        "pain_points":pain_points,
-        "core_needs":core_needs,
-        "motivation":motivation,
-        "behavior":behavior,
-        "quote":quote
-    }
-    # return output
-    return payload
 
 
 
@@ -312,6 +244,81 @@ user_prompt_pick_competitors = """
 ### TEXT: <<text>>
 ### ANSWER: 
 """
+
+
+def solutioning_generator(session_id, startup_name, idea_query):
+    # Generate goal, tagline, problem statement, and solution
+    goal = generate_completion(system_prompt_1st,user_prompt_1st.replace("<<idea>>",idea_query).replace("<<startup_name>>",startup_name)).rstrip().lstrip()
+    generated_slogan = generate_completion(system_prompt_2nd,user_prompt_2nd.replace("<<idea>>",idea_query).replace("<<startup_name>>",startup_name).replace("<<goal>>",goal)).rstrip().lstrip().replace("\"","")
+    generated_problem = generate_completion(system_prompt_3rd,user_prompt_3rd.replace("<<idea>>",idea_query).replace("<<startup_name>>",startup_name).replace("<<goal>>",goal)).rstrip().lstrip()
+    generated_solution = generate_completion(system_prompt_4th,user_prompt_4th.replace("<<idea>>",idea_query).replace("<<startup_name>>",startup_name).replace("<<goal>>",goal)).replace("<<problem_statement>>",generated_problem).rstrip().lstrip()
+    # generate payload 
+    payload = {
+        "session_id":session_id,
+        "generated_slogan":generated_slogan,
+        "generated_problem":generated_problem,
+        "generated_solution":generated_solution
+    }
+    
+    return payload
+
+
+import random
+
+def generate_random_demographics():
+    ages = range(18, 70)  # Assuming ages between 18 and 70
+    genders = ["male", "female"]  # Assuming True for male and False for female
+    locations = ['Palestine' ,'Algeria', 'India', 'UAE', 'Indonisia', ]  # Example locations
+    occupations = ['----',"-----"]  # Example occupations
+    salaries = range(30000, 150000, 5000)  
+
+    return {
+        'age': random.choice(ages),
+        'gender': random.choice(genders),
+        'location': random.choice(locations),
+        'occupation': random.choice(occupations),
+        'salary': random.choice(salaries)
+    }
+
+def persona_profiling_builder(session_id,output_solutioning,startup_name,idea):
+    # Building Demographics
+    demographics_string =""
+    demographics_dict= generate_random_demographics()
+
+    # Building Persona Details
+    persona_details = generate_completion(system_prompt_detailing,user_prompt_detailing.replace("<<idea>>",idea).replace("<<startup_name>>",startup_name).replace("<<slogan>>",output_solutioning["generated_slogan"]).replace("<<problem_statement>>",output_solutioning["generated_problem"]).replace("<<solution>>",output_solutioning["generated_solution"]).replace("<<demographics>>",demographics_string).replace("\n\n","")).rstrip().lstrip()
+    complete_information = "Based on the given information, we can create a persona profile as follows:\n\n"+persona_details
+
+    # Get the pain points
+    pain_points_detail = generate_completion(system_prompt_pick.replace("<<component>>","pain points"),user_prompt_pick.replace("<<text>>",complete_information))
+    pain_points = generate_completion(system_prompt_rewrite,user_prompt_rewrite.replace("<<text>>",pain_points_detail))
+    # Get the core needs
+    core_needs_detail = generate_completion(system_prompt_pick.replace("<<component>>","core needs"),user_prompt_pick.replace("<<text>>",complete_information))
+    core_needs = generate_completion(system_prompt_rewrite,user_prompt_rewrite.replace("<<text>>",core_needs_detail))
+    # Get the motivation
+    motivation_detail = generate_completion(system_prompt_pick.replace("<<component>>","motivation"),user_prompt_pick.replace("<<text>>",complete_information))
+    motivation = generate_completion(system_prompt_rewrite,user_prompt_rewrite.replace("<<text>>",motivation_detail))
+    # Get the behavior
+    behavior_detail = generate_completion(system_prompt_pick.replace("<<component>>","behavior"),user_prompt_pick.replace("<<text>>",complete_information))
+    behavior = generate_completion(system_prompt_rewrite,user_prompt_rewrite.replace("<<text>>",behavior_detail))
+    # Get the summarized quote
+    quote = generate_completion(system_prompt_quote,user_prompt_quote.replace("<<text>>",persona_details))
+
+    # Get output
+    payload = {
+        "module":"persona profiling builder",
+        "session_id":session_id,
+        "demographics":demographics_dict,
+        "pain_points":pain_points,
+        "core_needs":core_needs,
+        "motivation":motivation,
+        "behavior":behavior,
+        "quote":quote
+    }
+    # return output
+    return payload
+
+
 
 def market_analysis_generator(startup_name,output_solutioning):
 
