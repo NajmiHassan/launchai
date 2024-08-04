@@ -3,9 +3,10 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login,logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .services import solutioning_generator , persona_profiling_builder 
+from .services import solutioning_generator , persona_profiling_builder , market_analysis_generator
 from .models import *
 from rest_framework.response import Response
+import json
 
 # Create your views here.
 
@@ -139,23 +140,52 @@ def project_detail(request, id):
         
     # Save the updated project to the database
         project.save()
-    print("generated problem :",project.generated_problem )
-
+    market_analysis = project.generated_market_analysis  
+    context = {
+        'project': project,
+    }
     
-    return render(request, 'myapp/pages/project_detail.html',  {'project': project})
+    if market_analysis is not None : 
+        context['segmentation_data'] =json.dumps({
+            'labels': ['Men', 'Women'],
+            'datasets': [{
+                'data': [
+                    market_analysis.market_segmentation_male,
+                    market_analysis.market_segmentation_female
+                ],
+                'backgroundColor': ['#36A2EB', '#FF6384']
+            }]
+        })
+        context['growth_data'] = json.dumps({
+            'labels': [ '2020', '2021', '2022', '2023','2024',],
+            'datasets': [{
+                'label': 'Market Growth',
+                'data': [
+                    market_analysis.market_growth_1,
+                    market_analysis.market_growth_2,
+                    market_analysis.market_growth_3,
+                    market_analysis.market_growth_4,
+                    market_analysis.market_growth_5
+                ],
+                'backgroundColor': '#ff385c'
+            }]
+        })
+    return render(request, 'myapp/pages/project_detail.html', context)
 
 
 def chat_view(request):
   return render(request, 'myapp/pages/chat_front.html')
 
 
-
-
 def persona_profiling(request , id):
     project = get_object_or_404(StartupProject, id=id)
     
     if(project.generated_persona is None) : 
-        generated_solution = solutioning_generator(project.id, project.startup_name, project.startup_idea , )
+        generated_solution =  {
+        "generated_slogan":project.generated_slogan,
+        "generated_problem":project.generated_problem,
+        "generated_solution":project.generated_solution
+        }
         persona = persona_profiling_builder(id, generated_solution,project.startup_name, project.startup_idea )
         demographics = persona.get('demographics', {})
         persona = Persona.objects.create(
@@ -173,8 +203,117 @@ def persona_profiling(request , id):
         
         project.generated_persona = persona
         project.save()
-    print(project.generated_persona.demographics_age)
-    return render(request, 'myapp/pages/project_detail.html',  {'project': project})
+        
+    market_analysis = project.generated_market_analysis
+    
+         
+    context = {
+        'project': project,
+    }
+    
+    if market_analysis is not None : 
+        context['segmentation_data'] =json.dumps({
+            'labels': ['Men', 'Women'],
+            'datasets': [{
+                'data': [
+                    market_analysis.market_segmentation_male,
+                    market_analysis.market_segmentation_female
+                ],
+                'backgroundColor': ['#36A2EB', '#FF6384']
+            }]
+        })
+        context['growth_data'] = json.dumps({
+            'labels': [ '2020', '2021', '2022', '2023','2024',],
+            'datasets': [{
+                'label': 'Market Growth',
+                'data': [
+                    market_analysis.market_growth_1,
+                    market_analysis.market_growth_2,
+                    market_analysis.market_growth_3,
+                    market_analysis.market_growth_4,
+                    market_analysis.market_growth_5
+                ],
+                'backgroundColor': '#ff385c'
+            }]
+        })
+        
+    return render(request, 'myapp/pages/project_detail.html', context)
+
+
+
+def market_analysis_view(request, id) : 
+    project = get_object_or_404(StartupProject, id=id)
+    generated_solution =  {
+        "generated_slogan":project.generated_slogan,
+        "generated_problem":project.generated_problem,
+        "generated_solution":project.generated_solution
+    }
+    
+    market_analysis_data =market_analysis_generator( project.startup_name , generated_solution)
+
+    market_analysis = MarketAnalysis.objects.create(
+        market_size_details=market_analysis_data.get('market_size_details', ''),
+        market_size_value=market_analysis_data.get('market_size_value', ''),
+        market_segmentation_male=market_analysis_data.get('market_segmentation', {}).get('male', 0),
+        market_segmentation_female=market_analysis_data.get('market_segmentation', {}).get('female', 0),
+        
+        market_growth_1=market_analysis_data.get('market_growth', {}).get('2020', ''),
+        market_growth_2=market_analysis_data.get('market_growth', {}).get('2021', ''),
+        market_growth_3=market_analysis_data.get('market_growth', {}).get('2022', ''),
+        market_growth_4=market_analysis_data.get('market_growth', {}).get('2023', ''),
+        market_growth_5=market_analysis_data.get('market_growth', {}).get('2024', ''),
+        
+        competitor_1=market_analysis_data.get('competitor_list', []).get("1"),
+        competitor_2=market_analysis_data.get('competitor_list', []).get("2"),
+        competitor_3=market_analysis_data.get('competitor_list', []).get("3"),
+        competitor_4=market_analysis_data.get('competitor_list', []).get("4"),
+    )
+    
+    # Link the MarketAnalysis to the project
+    project.generated_market_analysis = market_analysis
+    project.save()
+    
+    context = {
+        'project': project,
+        'segmentation_data': json.dumps({
+            'labels': ['Men', 'Women'],
+            'datasets': [{
+                'data': [
+                    market_analysis.market_segmentation_male,
+                    market_analysis.market_segmentation_female
+                ],
+                'backgroundColor': ['#36A2EB', '#FF6384']
+            }]
+        }),
+        'growth_data': json.dumps({
+            'labels': [ '2020', '2021', '2022', '2023','2024',],
+            'datasets': [{
+                'label': 'Market Growth',
+                'data': [
+                    market_analysis.market_growth_1,
+                    market_analysis.market_growth_2,
+                    market_analysis.market_growth_3,
+                    market_analysis.market_growth_4,
+                    market_analysis.market_growth_5
+                ],
+                'backgroundColor': '#ff385c'
+            }]
+        })
+    }
+    
+    
+    
+    return render(request, 'myapp/pages/project_detail.html', context)
+
+
+
+def ai_view(request):
+    return render(request, 'myapp/pages/ai_front.html')
+
+    
+    
+    
+
     
 
 

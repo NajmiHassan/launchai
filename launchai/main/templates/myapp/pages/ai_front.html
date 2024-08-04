@@ -1,0 +1,19 @@
+<!-- myapp/templates/myapp/projects.html -->
+{% extends 'myapp/base.html' %}
+{% load static %}
+
+{% block title %}Projects{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/chat_front.css' %}" />
+{% endblock %}
+
+{% block content %}
+<div class="projects-container">
+    {% include 'myapp/includes/sidebar.html' %}
+
+    <main class="projects-main">
+
+    </main>
+</div>
+{% endblock %}

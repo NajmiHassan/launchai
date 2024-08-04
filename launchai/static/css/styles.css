@@ -249,7 +249,12 @@ body {
 
 }
 
-
+.sidebar-icons a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none; /* Remove underline from links */
+}
 
 
 .projects-sidebar {
@@ -271,10 +276,12 @@ body {
     flex-direction: column;
     gap: 30px;
     margin-top: 20px;
-    width: 36px;
+    width: 32px;
     height: auto;
     cursor: pointer;
 }
+
+
 
 .sidebar-icon.active {
     box-shadow: 0px 12px 20px 0px #00000014;
@@ -283,6 +290,8 @@ body {
     border-radius: 12px;
     padding: 4px;
 }
+
+
 
 .sidebar-profile {
     margin-top: 20px;

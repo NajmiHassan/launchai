@@ -12,8 +12,11 @@ urlpatterns = [
     path('set_idea/', views.set_idea, name='set_idea'),
     path('projects/', views.projects, name='projects'), 
     path('project/<int:id>/', views.project_detail, name='project_detail'),
-    path('project/<int:id>/', views.persona_profiling, name='persona_profiling'),
+    path('persona/<int:id>/', views.persona_profiling, name='persona_profiling'),
+    path('market/<int:id>/', views.market_analysis_view, name='market_analysis'),
     path('chat/', views.chat_view, name='chat_front'),
+    path('ai/', views.ai_view, name='ai_front'),
+
     # path('project/<int:id>/', views.generate, name='project_detail_generated'),
     
 ]

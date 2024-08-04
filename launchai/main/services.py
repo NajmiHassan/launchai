@@ -165,9 +165,9 @@ import random
 
 def generate_random_demographics():
     ages = range(18, 70)  # Assuming ages between 18 and 70
-    genders = [True, False]  # Assuming True for male and False for female
-    locations = ['Algeria', 'India', 'UAE', 'Indonisia', 'Palestine']  # Example locations
-    occupations = ['Engineer', 'Doctor', 'Teacher', 'Artist', 'Entrepreneur']  # Example occupations
+    genders = ["male", "female"]  # Assuming True for male and False for female
+    locations = ['Palestine' ,'Algeria', 'India', 'UAE', 'Indonisia', ]  # Example locations
+    occupations = ['----',"-----"]  # Example occupations
     salaries = range(30000, 150000, 5000)  
 
     return {
@@ -215,3 +215,151 @@ def persona_profiling_builder(session_id,output_solutioning,startup_name,idea):
     }
     # return output
     return payload
+
+
+
+system_prompt_market_size = """
+You are a startup specialist.
+User has provided his starup idea, goal,  problem statement, and persona demographics to you. 
+Based on these, please determine the target addressable market in USD. 
+"""
+user_prompt_market_size= """
+### STARTUP NAME: <<startup_name>>
+### GOAL: <<goal>>
+### PROBLEM STATEMENT: <<problem_statement>>
+### SOLUTION: <<solution>>
+### DEMOGRAPHICS: <<demographics>>
+### ANSWER:
+"""
+# PROMPT TEMPLATE: for building market analysis: rewrite market size in USD
+system_prompt_pick_market_size = """
+Provided to you a text. You need to pick up the only final target addressable market in USD of the text provided. 
+Just straightforward pick it up, you don't need to modify
+"""
+user_prompt_pick_market_size = """
+### TEXT: <<text>>
+### ANSWER: 
+"""
+# PROMPT TEMPLATE: for building market analysis: market segmentation
+system_prompt_market_segmentation = """
+You are a startup specialist.
+User has provided his starup idea, goal,  problem statement, and persona demographics to you. 
+Based on these, please determine the market segmentation between men and women in fraction.
+
+Example response #1:
+0.35|||0.65
+
+Example response #2:
+0.45|||0.55
+"""
+user_prompt_market_segmentation= """
+### STARTUP NAME: <<startup_name>>
+### GOAL: <<goal>>
+### PROBLEM STATEMENT: <<problem_statement>>
+### SOLUTION: <<solution>>
+### DEMOGRAPHICS: <<demographics>>
+### ANSWER:
+"""
+# PROMPT TEMPLATE: for building market analysis: market growth
+system_prompt_market_growth = """
+You are a startup specialist.
+User has provided his starup idea, goal,  problem statement, and persona demographics to you. 
+Based on these, please determine the market growth iin the last 5 years in M USD.
+Please provide the market growth information in 2019, 2020, 2021, 2022, 2023, and 2024
+"""
+user_prompt_market_growth = """
+### STARTUP NAME: <<startup_name>>
+### GOAL: <<goal>>
+### PROBLEM STATEMENT: <<problem_statement>>
+### SOLUTION: <<solution>>
+### DEMOGRAPHICS: <<demographics>>
+### ANSWER:
+"""
+# PROMPT TEMPLATE: for building market analysis: rewrite market growth
+system_prompt_pick_market_growth = """
+Provided to you a text, containing market size value in 2019, 2020, 2021, 2022, 2023, and 2024 in M USD. 
+You need to pick up only the numerical value.
+
+Just straightforward pick number in the correct format as below:
+2019_value|||2020_value|||2021_value|||2022_value|||2023_value|||2024_value
+"""
+user_prompt_pick_market_growth = """
+### TEXT: <<text>>
+### ANSWER: 
+"""
+# PROMPT TEMPLATE: for building for building market analysis: market growth
+system_prompt_competitors = """
+You are a startup specialist.
+User has provided his starup idea, goal,  problem statement, and persona demographics to you. 
+Based on these, please mention 5 competitors of his startup. 
+"""
+user_prompt_competitors = """
+### STARTUP NAME: <<startup_name>>
+### GOAL: <<goal>>
+### PROBLEM STATEMENT: <<problem_statement>>
+### SOLUTION: <<solution>>
+### DEMOGRAPHICS: <<demographics>>
+### ANSWER:
+"""
+# PROMPT TEMPLATE: for building persona profile: pain points, core needs, motivation, and behavior
+system_prompt_pick_competitors = """
+Provided to you a text, containing 4 competitors name and just the name (competitor_1,competitor_2,competitor_3,competitor_4).  
+
+You need to rewrite it using this format :
+`competitor_1|||competitor_2|||competitor_3|||competitor_4`
+"""
+user_prompt_pick_competitors = """
+### TEXT: <<text>>
+### ANSWER: 
+"""
+
+def market_analysis_generator(startup_name,output_solutioning):
+
+    # Generate Market Size
+    market_size_details = generate_completion(system_prompt_market_size,user_prompt_market_size.replace("<<startup_name>>",startup_name).replace("<<goal>>",output_solutioning["generated_slogan"]).replace("<<problem_statement>>",output_solutioning["generated_problem"]).replace("<<solution>>",output_solutioning["generated_solution"]).replace("<<demographics>>","").replace("\n\n","")).rstrip().lstrip()
+    market_size_value = generate_completion(system_prompt_pick_market_size,user_prompt_pick_market_size.replace("<<text>>",market_size_details))
+    # Generate Segmentation
+    market_segmentation = generate_completion(system_prompt_market_segmentation,user_prompt_market_segmentation.replace("<<startup_name>>",startup_name).replace("<<goal>>",output_solutioning["generated_slogan"]).replace("<<problem_statement>>",output_solutioning["generated_problem"]).replace("<<solution>>",output_solutioning["generated_solution"]).replace("<<demographics>>","").replace("\n\n","")).rstrip().lstrip()
+    male_segment = market_segmentation.split('|||')[0]
+    female_segment = market_segmentation.split('|||')[1]
+    dict_market_segmentation = {
+        "male":male_segment,
+        "female":female_segment
+    }
+    # Generate Market Growth
+    market_growth = generate_completion(system_prompt_market_growth,user_prompt_market_growth.replace("<<startup_name>>",startup_name).replace("<<goal>>",output_solutioning["generated_slogan"]).replace("<<problem_statement>>",output_solutioning["generated_problem"]).replace("<<solution>>",output_solutioning["generated_solution"]).replace("<<demographics>>","").replace("\n\n","")).rstrip().lstrip()
+    picked_market_growth = generate_completion(system_prompt_pick_market_growth,user_prompt_pick_market_growth.replace("<<text>>",market_growth))
+    market_growth_arr = picked_market_growth.split("|||")
+    
+    filtered_data = [value for value in market_growth_arr if value.isdigit()]
+
+    dict_market_growth = {}
+    years = ['2020','2021','2022','2023','2024']
+    for i in range(len(filtered_data)):
+        dict_market_growth[years[i]] = filtered_data[i]
+    # Generate Competitors
+    competitor_list = generate_completion(system_prompt_competitors,user_prompt_competitors.replace("<<startup_name>>",startup_name).replace("<<goal>>",output_solutioning["generated_slogan"]).replace("<<problem_statement>>",output_solutioning["generated_problem"]).replace("<<solution>>",output_solutioning["generated_solution"]).replace("<<demographics>>","").replace("\n\n","")).rstrip().lstrip()
+    print("competitor list " , competitor_list)
+    a= competitor_list.strip().split('\n')
+    
+    
+    # picked_competitor = generate_completion(system_prompt_pick_competitors,user_prompt_pick_competitors.replace("<<text>>",competitor_list))
+    # competitor_arr = picked_competitor.split("|||")
+    dict_competitor = {}
+    for i in range(1,len(a)):
+        dict_competitor[str(i)] = a[i-1]
+
+    # Get output
+    payload = {
+        "module":"market analysis generator",
+        "market_size_details":market_size_details,
+        "market_size_value":market_size_value,
+        "market_segmentation":dict_market_segmentation,
+        "market_growth":dict_market_growth,
+        "competitor_list":dict_competitor,
+    }
+    # sending to db
+    print("picked market_growth" ,market_growth_arr)
+    # return output
+    return payload
+

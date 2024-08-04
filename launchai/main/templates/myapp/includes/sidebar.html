@@ -5,10 +5,52 @@
 
     <div class="sidebar-logo">
         <img src="{% static 'images/icons/logo.svg' %}" alt="Logo">
-    </div>
-        <img src="{% static 'images/icons/dashboard.svg' %}" alt="dashboard" class="sidebar-icon active">
-        <img src="{% static 'images/icons/chat.svg' %}" alt="chat" class="sidebar-icon">
-        <img src="{% static 'images/icons/ai.svg' %}" alt="ai" class="sidebar-icon">
+    </div class="sidebar-icons">
+        <a href="{% url 'projects' %}" class="{% if request.path == '/projects/' %}active{% endif %}" style ="
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-decoration: none;">
+            <img style="{% if request.path == '/projects/' %}
+                    box-shadow: 0px 12px 20px 0px #00000014;
+                    border: 1px solid #00000014;
+                    box-shadow: 0px 1px 4px 0px #00000014;
+                    border-radius: 12px;
+                    padding: 8px;
+                    height: 32px;
+                    weight: 32px;
+            {% endif %}" src="{% static 'images/icons/dashboard.svg' %}" alt="dashboard" class="sidebar-icon">
+        </a>
+        <a href="{% url 'chat_front' %}" class="{% if request.path == '/chat/' %}active{% endif %}" style ="
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-decoration: none;">
+            <img style="{% if request.path == '/chat/' %}
+                    box-shadow: 0px 12px 20px 0px #00000014;
+                    border: 1px solid #00000014;
+                    box-shadow: 0px 1px 4px 0px #00000014;
+                    border-radius: 12px;
+                    padding: 8px;
+                    height: 32px;
+                    weight: 32px;
+            {% endif %}" src="{% static 'images/icons/chat.svg' %}" alt="chat" class="sidebar-icon">
+        </a>
+        <a href="{% url 'ai_front' %}" class="{% if request.path == '/ai/' %}active{% endif %}" style ="
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-decoration: none;">
+            <img style="{% if request.path == '/ai/' %}
+                    box-shadow: 0px 12px 20px 0px #00000014;
+                    border: 1px solid #00000014;
+                    box-shadow: 0px 1px 4px 0px #00000014;
+                    border-radius: 12px;
+                    padding: 8px;
+                    height: 32px;
+                    weight: 32px;
+            {% endif %}" src="{% static 'images/icons/ai.svg' %}" alt="chat" class="sidebar-icon">
+        </a>
     </div>
     <div class="sidebar-profile">
         <img src="{% static 'images/icons/profile.png' %}" alt="Profile" class="profile-img">

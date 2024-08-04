@@ -1,12 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-
-
 class Persona(models.Model):
     
     demographics_age = models.IntegerField(null=True)
-    demographics_gender = models.BooleanField( null=True)	
+    demographics_gender = models.CharField( max_length=255 ,default="male")	
     demographics_location = models.CharField(max_length=255 ,null=True)
     demographics_occupation = models.CharField(max_length=255, null=True)
     demographics_salary = models.FloatField(null=True)
@@ -17,9 +15,28 @@ class Persona(models.Model):
     behavior = models.TextField(blank=True, null=True)
     quote = models.TextField(blank=True, null=True)
     
-    
 class MarketAnalysis(models.Model):
-    pass
+    # Market size details
+    market_size_details = models.TextField(blank=True, null=True)
+    market_size_value = models.CharField(max_length=255 , null = True)
+    
+    # Market segmentation
+    market_segmentation_male = models.FloatField( null=True)
+    market_segmentation_female = models.FloatField( null=True)
+    
+    # Market growth over the years
+    market_growth_1 = models.CharField(max_length=255, blank=True, null=True)
+    market_growth_2 = models.CharField(max_length=255, blank=True, null=True)
+    market_growth_3 = models.CharField(max_length=255, blank=True, null=True)
+    market_growth_4 = models.CharField(max_length=255, blank=True, null=True)
+    market_growth_5 = models.CharField(max_length=255, blank=True, null=True)
+    
+    competitor_1 = models.TextField(blank=True, null=True)
+    competitor_2 = models.TextField(blank=True, null=True)
+    competitor_3 = models.TextField(blank=True, null=True)
+    competitor_4 = models.TextField(blank=True, null=True)
+    competitor_5 = models.TextField(blank=True, null=True)
+
 
 class StartupProject(models.Model):
     startup_name = models.CharField(max_length=255)
