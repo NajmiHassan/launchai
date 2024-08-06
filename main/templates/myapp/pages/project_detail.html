@@ -153,14 +153,28 @@
 
           
             <div class="grid-container">
-                <div class="grid-item">
-            <div class="project-box">
-                <div class="box-header">
-                    <h3>MVP Builder</h3>
+                    <div class="grid-item">
+                <div class="project-box">
+                    <div class="box-header">
+                        <img src="{% static 'images/icons/vector.svg' %}" alt="Tagline Icon" class="box-icon">
+                        <h3 class="h3-title">MVP <span class="span-color">Builder</span></h3>
+                    </div>
+                    <p>{{ project.generated_mvp_builder }}</p>
                 </div>
-                <p>{{ project.generated_mvp_builder }}</p>
+                </div>
+
+                <div class="grid-item">
+                    <div class="project-box">
+                        <div class="box-header">
+                            <img src="{% static 'images/icons/vector.svg' %}" alt="Tagline Icon" class="box-icon">
+                            <h3 class="h3-title">User <span class="span-color">Feedback</span> Analyzer</h3>
+                            
+                        </div>
+                        <h4>Click to analyze User Feedback here</h4>
+                        <a href="user/analyze" class="btn-analyze" style="width: 100px;">Analyze</a>
+                    </div>
+                    </div>
             </div>
-            </div></div>
         </div>
 
         <div class="update-dashboard">
