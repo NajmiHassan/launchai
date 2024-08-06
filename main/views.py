@@ -310,6 +310,9 @@ def market_analysis_view(request, id) :
 def ai_view(request):
     return render(request, 'myapp/pages/ai_front.html')
 
+def analyze_view(request):
+    return render(request, 'myapp/pages/analyze.html')
+
     
     
     

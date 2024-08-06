@@ -16,6 +16,7 @@ urlpatterns = [
     path('market/<int:id>/', views.market_analysis_view, name='market_analysis'),
     path('chat/', views.chat_view, name='chat_front'),
     path('ai/', views.ai_view, name='ai_front'),
+    path('analyze/', views.analyze_view, name='analyze'),
 
     # path('project/<int:id>/', views.generate, name='project_detail_generated'),
     
