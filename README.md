@@ -1,5 +1,7 @@
+#Launch AI Figma Design
+https://www.figma.com/design/AHWJjeKz1jwjRiMNLkX6JB/launchai?node-id=0-1&t=XnlyY06WSfLWHnsW-0
 # launch AI backend 
-
+Please run these two commands to try LauchAI working.
 ## install the requirements
 `pip install -r requirements.txt`
 ## run the server: 
